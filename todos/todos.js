@@ -20,15 +20,21 @@ todoForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = new FormData(todoForm);
 
+    //set the variable of made up word, newToDo for createToDo async function from fetch file.
     await createTodo({
+        //data.get will grab the data from the input from the form in html file.
         todo: data.get('todo'),
         complete: false,
     });
+
+    todoForm.reset();
+    //displayTodos();
 });
 
 async function displayTodos() {
     // fetch the todos
-    todosEl.textContent = '';
+	//const todoList = await 
+    //todosEl.textContent = '';
     // display the list of todos
 
     // be sure to give each todo an event listener

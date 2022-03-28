@@ -11,6 +11,7 @@ export async function createTodo(todo) {
         .insert({
             todo:todo.todo,
             complete: false,
+			//
             user_id: client.auth.user().id
         });
 
@@ -22,7 +23,8 @@ export async function deleteAllTodos(id) {
     const response = await client
         .from('todos')
         .delete()
-        .match({ user_id:client.auth.user().id })
+		//user.id sees the user object
+        .match({ user_id: id })
         .single();
 
     return checkError(response);
@@ -33,7 +35,7 @@ export async function getTodos(id) {
     const response = await client
         .from('todos')
         .select('*')
-        .match({ user_id:client.auth.user().id })
+        .match({ user_id:id })
         .single();
 
 
@@ -45,7 +47,7 @@ export async function completeTodo(id) {
     const response = await client
         .from('todos')
         .update({ complete: true })
-        .match({ user_id:client.auth.user().id, id:id })
+        .match({ user_id: id })
         .single();
 
     return checkError(response);
