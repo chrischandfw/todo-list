@@ -9,30 +9,31 @@ export async function createTodo(todo) {
     const response = await client
         .from('todos')
         .insert({
-            todo:'',
-            complete: false
+            todo:todo.todo,
+            complete: false,
+            user_id: client.auth.user().id
         });
 
     return checkError(response);
 }
 
-export async function deleteAllTodos() {
+export async function deleteAllTodos(id) {
     // delete all todos for this user in supabase
     const response = await client
         .from('todos')
         .delete()
-        .match({ user_id:id })
+        .match({ user_id:client.auth.user().id })
         .single();
 
     return checkError(response);
 }
 
-export async function getTodos() {
+export async function getTodos(id) {
     // get all todos for this user from supabase
     const response = await client
         .from('todos')
         .select('*')
-        .match({ user_id:id })
+        .match({ user_id:client.auth.user().id })
         .single();
 
 
@@ -44,7 +45,9 @@ export async function completeTodo(id) {
     const response = await client
         .from('todos')
         .update({ complete: true })
-        .match({ user_id:id });
+        .match({ user_id:client.auth.user().id, id:id })
+        .single();
+
     return checkError(response);
 }
 
@@ -83,5 +86,6 @@ export async function logout() {
 }
 
 function checkError({ data, error }) {
+    // eslint-disable-next-line no-console
     return error ? console.error(error) : data;
 }
