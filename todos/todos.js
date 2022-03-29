@@ -33,7 +33,7 @@ todoForm.addEventListener('submit', async (e) => {
 
 async function displayTodos() {
     // fetch the todos
-    const todoList = await getTodos(id);
+    const todoList = await getTodos();
     
     todosEl.textContent = '';
     // display the list of todos
@@ -42,16 +42,16 @@ async function displayTodos() {
 
     // on click, complete that todo
     for (let item of todoList) {
-        const itemEl = renderTodo(todo);
+        const itemEl = renderTodo(item);
+        itemEl.addEventListener('click', async () => {
+            await completeTodo(item.id);
+            displayTodos();
+        });
+        todosEl.append(itemEl);
     }
 
     //itemEl.classList.add(item.complete ? 'is_complete' : 
-    itemEl.addEventListener('click', async () => {
-        await completeTodo(todo.id);
-        displayTodos();
-    });
 
-    todosEl.append(itemEl);
 
 }
 
@@ -65,8 +65,14 @@ logoutButton.addEventListener('click', () => {
 
 deleteButton.addEventListener('click', async () => {
     // delete all todos
-    deleteAllTodos();
+    await deleteAllTodos();
     // then refetch and display the updated list of todos
-    await getTodos();
-    completeTodo();
+    //await getTodos();
+    //completeTodo();
+    await displayTodos();
+});
+
+window.addEventListener('load', () =>{
+
+    displayTodos();
 });

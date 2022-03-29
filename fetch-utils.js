@@ -18,25 +18,26 @@ export async function createTodo(todo) {
     return checkError(response);
 }
 
-export async function deleteAllTodos(id) {
+export async function deleteAllTodos() {
     // delete all todos for this user in supabase
+	//getting specific user and assign it a variable called user
+    const user = getUser();
     const response = await client
         .from('todos')
         .delete()
 		//user.id sees the user object
-        .match({ user_id: id })
-        .single();
+        .match({ user_id: user.id });
+
 
     return checkError(response);
 }
 
-export async function getTodos(id) {
+export async function getTodos() {
     // get all todos for this user from supabase
     const response = await client
         .from('todos')
-        .select('*')
-        .match({ user_id:id })
-        .single();
+        .select('*');
+
 
 
     return checkError(response);
@@ -53,6 +54,7 @@ export async function completeTodo(id) {
     return checkError(response);
 }
 
+//get specific id for each user, a unique id and info
 export function getUser() {
     return client.auth.session() && client.auth.session().user;
 }
