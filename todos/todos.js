@@ -15,6 +15,8 @@ const todoForm = document.querySelector('.todo-form');
 const logoutButton = document.querySelector('#logout');
 const deleteButton = document.querySelector('.delete-button');
 
+const loadingEl = document.querySelector('.loading-spinner');
+
 todoForm.addEventListener('submit', async (e) => {
     // on submit, create a todo, reset the form, and display the todos
     e.preventDefault();
@@ -31,8 +33,14 @@ todoForm.addEventListener('submit', async (e) => {
     displayTodos();
 });
 
+function toggleLoadingSpinner(){
+    loadingEl.classList.toggle('invisible');
+}
+
 async function displayTodos() {
     // fetch the todos
+
+    toggleLoadingSpinner();
     const todoList = await getTodos();
     
     todosEl.textContent = '';
@@ -51,10 +59,9 @@ async function displayTodos() {
     }
 
     //itemEl.classList.add(item.complete ? 'is_complete' : 
-
+    toggleLoadingSpinner();
 
 }
-
 
 // add an on load listener that fetches and displays todos on load
 
