@@ -145,3 +145,8 @@ footer {
 #loading-text {
     animation: pulse 1s infinite ease-in-out; 
 }
+
+.complete {
+	background-color: red;
+	text-decoration: line-through;
+}

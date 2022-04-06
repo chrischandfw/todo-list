@@ -51,16 +51,19 @@ async function displayTodos() {
     // on click, complete that todo
     for (let item of todoList) {
         const itemEl = renderTodo(item);
-        itemEl.addEventListener('click', async () => {
-            await completeTodo(item.id);
-            displayTodos();
-        });
+        if (item.complete) {
+            itemEl.classList.add('is-complete');
+        } else {
+            itemEl.addEventListener('click', async () => {
+                await completeTodo(item.id);
+                displayTodos();
+            });
+        
+        }
         todosEl.append(itemEl);
     }
-
     //itemEl.classList.add(item.complete ? 'is_complete' : 
     toggleLoadingSpinner();
-
 }
 
 // add an on load listener that fetches and displays todos on load
